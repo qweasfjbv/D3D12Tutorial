@@ -15,12 +15,12 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp">
+    <ClCompile Include="1_VectorAlgebra.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="D3D12_Tutorial.rc">
+    <ResourceCompile Include="1_VectorAlgebra.rc">
       <Filter>리소스 파일</Filter>
     </ResourceCompile>
   </ItemGroup>
@@ -28,7 +28,7 @@
     <Image Include="small.ico">
       <Filter>리소스 파일</Filter>
     </Image>
-    <Image Include="D3D12_Tutorial.ico">
+    <Image Include="1_VectorAlgebra.ico">
       <Filter>리소스 파일</Filter>
     </Image>
   </ItemGroup>
