@@ -1,14 +1,15 @@
 //=================================================
 //
-// 1. Vector Algebra
+// 1. Vector Calculation
 //	
 // - SIMD를 활용하려면 XMVECTOR 형식으로 변환해야됨
-// - XMVECTOR -> XMFLOATn : XMLoadFloatn 함수 사용
-// - XMFLOATn -> XMVECTOR : XMStoreFloatn 함수 사용
+// - XMVECTOR -> XMFLOATn : XMStoreFloatn 함수 사용
+// - XMFLOATn -> XMVECTOR : XMLoadFloatn 함수 사용
 // - 상수벡터는 XMVECTORF32 사용
 // 
 // - XMVECTOR 설정 함수
 // - XMVECTOR 연산 함수
+// - float의 오차 및 비교 연산
 // 
 //=================================================
 
