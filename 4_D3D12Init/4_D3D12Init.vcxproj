@@ -21,10 +21,9 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{1578C255-D1B2-49D4-B684-A1A8100F7060}</ProjectGuid>
-    <RootNamespace>D3D12Tutorial</RootNamespace>
+    <ProjectGuid>{bac5d26d-dfa1-44d0-ab49-475f04024bf3}</ProjectGuid>
+    <RootNamespace>My4D3D12Init</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
-    <ProjectName>0_WindowsProgramming</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -128,14 +127,22 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp" />
+    <ClCompile Include="..\common\d3dApp.cpp" />
+    <ClCompile Include="..\common\d3dUtil.cpp" />
+    <ClCompile Include="..\common\GameTimer.cpp" />
+    <ClCompile Include="4_D3D12Init.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="D3D12_Tutorial.rc" />
+    <ResourceCompile Include="4_D3D12Init.rc" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="D3D12_Tutorial.ico" />
+    <Image Include="4_D3D12Init.ico" />
     <Image Include="small.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\common\d3dApp.h" />
+    <ClInclude Include="..\common\d3dUtil.h" />
+    <ClInclude Include="..\common\GameTimer.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
