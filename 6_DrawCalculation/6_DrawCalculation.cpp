@@ -1,4 +1,25 @@
-﻿#include "../common/d3dApp.h"
+﻿//=================================================
+//
+// 6. Draw Calculation
+//	
+// - 하나의 물체를 그리기 위해서 해야하는 작업들
+//
+// - D3D12_INPUT_LAYOUT_DESC 구조체는 D3D12_INPUT_ELEMENT_DESC 배열과 배열 길이로 구성
+// - D3D12_INPUT_ELEMENT 는 Vertex 구조체의 각 성분을 서술
+// - 입력배치서술은 D3D12_GRAPHICS_PIPELINE_STATE_DESC 구조체의 한 필드로 설정됨 (PSO의 일부)
+// - 이를 정점 셰이더의 입력 서명과 일치하는지 점검
+// 
+// - GPU가 Vertex/Index 배열에 접근하려면 ID3D12Resource (GPU자원) 에 넣어두어야함
+// - D3D12_VERTEX/INDEX_BUFFER_VIEW 구조체와 Device::CreateCommittedResource 호출하여 생성
+// 
+// - 상수 버퍼는 셰이더에서 참조가능한 자료를 담은 ID3D12Resource 임
+// - 상수 버퍼는 기본 힙이 아니라 업로드 힙에 생성되므로, 상수 버퍼의 자료를 갱신할 수 있음
+// 
+// 
+//=================================================
+
+
+#include "../common/d3dApp.h"
 #include "../common/MathHelper.h"
 #include "../common/UploadBuffer.h"
 
@@ -75,7 +96,7 @@ WinMain(HINSTANCE hInstance, HINSTANCE prevInstance, PSTR cmdLine, int showCmd) 
 
 	try {
 		BoxApp theApp(hInstance);
-		if (!theApp.Initialize()) 
+		if (!theApp.Initialize())
 			return 0;
 
 		return theApp.Run();
@@ -86,8 +107,8 @@ WinMain(HINSTANCE hInstance, HINSTANCE prevInstance, PSTR cmdLine, int showCmd) 
 	}
 }
 
-BoxApp::BoxApp(HINSTANCE hInstance) 
-: D3DApp(hInstance) { }
+BoxApp::BoxApp(HINSTANCE hInstance)
+	: D3DApp(hInstance) { }
 
 BoxApp::~BoxApp() { }
 
@@ -182,7 +203,7 @@ void BoxApp::Draw(const GameTimer& gt) {
 	// 1. 셰이더 리소스의 디스크립터 힙 설정
 	ID3D12DescriptorHeap* descriptorHeaps[] = { mCbvHeap.Get() };
 	mCommandList->SetDescriptorHeaps(_countof(descriptorHeaps), descriptorHeaps);
-	
+
 	// 2. 셰이더와 연결된 바인딩 구조 설정
 	mCommandList->SetGraphicsRootSignature(mRootSignature.Get());
 
@@ -255,7 +276,7 @@ void BoxApp::OnMouseMove(WPARAM btnState, int x, int y) {
 }
 
 void BoxApp::BuildDescriptorHeaps() {
-	D3D12_DESCRIPTOR_HEAP_DESC cbvHeapDesc;							
+	D3D12_DESCRIPTOR_HEAP_DESC cbvHeapDesc;
 	cbvHeapDesc.NumDescriptors = 1;									// 디스크립터 힙에 저장 공간
 	cbvHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;		// CBV, SRV, UAV 담을 수 있음
 	cbvHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;	// 루트 시그니쳐에서 접근 가능
@@ -317,7 +338,7 @@ void BoxApp::BuildRootSignature() {
 }
 
 void BoxApp::BuildShadersAndInputLayout() {
-	
+
 	HRESULT hr = S_OK;
 
 	mvsByteCode = d3dUtil::CompileShader(L"Shaders\\color.hlsl", nullptr, "VS", "vs_5_0");
@@ -369,13 +390,13 @@ void BoxApp::BuildBoxGeometry() {
 		4, 0, 3,
 		4, 3, 7
 	};
-	
+
 	const UINT vbByteSize = (UINT)vertices.size() * sizeof(Vertex);
 	const UINT ibByteSize = (UINT)indices.size() * sizeof(std::uint16_t);
 
 	mBoxGeo = std::make_unique<MeshGeometry>();
 	mBoxGeo->Name = "boxGeo";
-	
+
 	// GPU에 업로드 하기 전에 CPU 메모리에 먼저 올리는 과정
 	ThrowIfFailed(D3DCreateBlob(vbByteSize, &mBoxGeo->VertexBufferCPU));
 	CopyMemory(mBoxGeo->VertexBufferCPU->GetBufferPointer(),
@@ -414,7 +435,7 @@ void BoxApp::BuildBoxGeometry() {
 }
 
 void BoxApp::BuildPSO() {
-	
+
 	D3D12_GRAPHICS_PIPELINE_STATE_DESC psoDesc;
 	ZeroMemory(&psoDesc, sizeof(D3D12_GRAPHICS_PIPELINE_STATE_DESC));
 	psoDesc.InputLayout = { mInputLayout.data(), (UINT)mInputLayout.size() };
