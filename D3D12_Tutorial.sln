@@ -11,6 +11,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "2_MatrixCalculation", "2_Ma
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "4_D3D12Init", "4_D3D12Init\4_D3D12Init.vcxproj", "{BAC5D26D-DFA1-44D0-AB49-475F04024BF3}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "6_DrawCalculation", "6_DrawCalculation\6_DrawCalculation.vcxproj", "{30F5BFA3-825F-430C-AEBC-9F93E13653EC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -51,6 +53,14 @@ Global
 		{BAC5D26D-DFA1-44D0-AB49-475F04024BF3}.Release|x64.Build.0 = Release|x64
 		{BAC5D26D-DFA1-44D0-AB49-475F04024BF3}.Release|x86.ActiveCfg = Release|Win32
 		{BAC5D26D-DFA1-44D0-AB49-475F04024BF3}.Release|x86.Build.0 = Release|Win32
+		{30F5BFA3-825F-430C-AEBC-9F93E13653EC}.Debug|x64.ActiveCfg = Debug|x64
+		{30F5BFA3-825F-430C-AEBC-9F93E13653EC}.Debug|x64.Build.0 = Debug|x64
+		{30F5BFA3-825F-430C-AEBC-9F93E13653EC}.Debug|x86.ActiveCfg = Debug|Win32
+		{30F5BFA3-825F-430C-AEBC-9F93E13653EC}.Debug|x86.Build.0 = Debug|Win32
+		{30F5BFA3-825F-430C-AEBC-9F93E13653EC}.Release|x64.ActiveCfg = Release|x64
+		{30F5BFA3-825F-430C-AEBC-9F93E13653EC}.Release|x64.Build.0 = Release|x64
+		{30F5BFA3-825F-430C-AEBC-9F93E13653EC}.Release|x86.ActiveCfg = Release|Win32
+		{30F5BFA3-825F-430C-AEBC-9F93E13653EC}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

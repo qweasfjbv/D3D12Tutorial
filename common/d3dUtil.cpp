@@ -44,7 +44,10 @@ Microsoft::WRL::ComPtr<ID3D12Resource> d3dUtil::CreateDefaultBuffer(
 {
     ComPtr<ID3D12Resource> defaultBuffer;
 
-    // Create the actual default buffer resource.
+    // CPU : 임시 업로드 힙에 데이터 넣음
+    // GPU : 업로드 힙에 있는걸 기본 버퍼로 옮긴 다음에 빠른 작업 가능
+
+    // 실제 기본 버퍼 자원 생성
     CD3DX12_HEAP_PROPERTIES defaultHeapProperty = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_DEFAULT);
     CD3DX12_RESOURCE_DESC defaultBufferDesc = CD3DX12_RESOURCE_DESC::Buffer(byteSize);
     ThrowIfFailed(device->CreateCommittedResource(
@@ -55,9 +58,7 @@ Microsoft::WRL::ComPtr<ID3D12Resource> d3dUtil::CreateDefaultBuffer(
         nullptr,
         IID_PPV_ARGS(defaultBuffer.GetAddressOf())));
 
-    // In order to copy CPU memory data into our default buffer, we need to create
-    // an intermediate upload heap. 
-
+    // 임시 업로드 힙 생성
     CD3DX12_HEAP_PROPERTIES uploadHeapProperty = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD);
     CD3DX12_RESOURCE_DESC uploadBufferDesc = CD3DX12_RESOURCE_DESC::Buffer(byteSize);
     ThrowIfFailed(device->CreateCommittedResource(
@@ -69,29 +70,27 @@ Microsoft::WRL::ComPtr<ID3D12Resource> d3dUtil::CreateDefaultBuffer(
         IID_PPV_ARGS(uploadBuffer.GetAddressOf())));
 
 
-    // Describe the data we want to copy into the default buffer.
+    // 기본 버퍼에 복사할 자료 서술
     D3D12_SUBRESOURCE_DATA subResourceData = {};
     subResourceData.pData = initData;
     subResourceData.RowPitch = byteSize;
     subResourceData.SlicePitch = subResourceData.RowPitch;
 
-    // Schedule to copy the data to the default buffer resource.  At a high level, the helper function UpdateSubresources
-    // will copy the CPU memory into the intermediate upload heap.  Then, using ID3D12CommandList::CopySubresourceRegion,
-    // the intermediate upload heap data will be copied to mBuffer.
-
+    // 기본 버퍼 자원으로의 자원 복사 요청
+    // UpdateSubresources : CPU 메모리를 임시 업로드 힙에 복사
+    // CopySubreousrceRegion : 임시 업로드 힙의 자료를 mBuffer에 복사 (내부에서 호출됨)
     CD3DX12_RESOURCE_BARRIER transitionToCopyDest = CD3DX12_RESOURCE_BARRIER::Transition(defaultBuffer.Get(),
         D3D12_RESOURCE_STATE_COMMON, D3D12_RESOURCE_STATE_COPY_DEST);
 	cmdList->ResourceBarrier(1, &transitionToCopyDest);
+
     UpdateSubresources<1>(cmdList, defaultBuffer.Get(), uploadBuffer.Get(), 0, 0, 1, &subResourceData);
     
     CD3DX12_RESOURCE_BARRIER transitionToGenericRead = CD3DX12_RESOURCE_BARRIER::Transition(defaultBuffer.Get(),
         D3D12_RESOURCE_STATE_COPY_DEST, D3D12_RESOURCE_STATE_GENERIC_READ);
 	cmdList->ResourceBarrier(1, &transitionToGenericRead);
 
-    // Note: uploadBuffer has to be kept alive after the above function calls because
-    // the command list has not been executed yet that performs the actual copy.
-    // The caller can Release the uploadBuffer after it knows the copy has been executed.
-
+    // 업로드 버퍼의 실제 복사가 수행되지 않았기 때문에
+    //      할당 해제 하면 안됨
 
     return defaultBuffer;
 }
